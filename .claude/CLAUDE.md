@@ -1,5 +1,30 @@
+# CLAUDE.md
 
-You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Commands
+
+```bash
+npm start           # Start dev server at http://localhost:4200
+npm run build       # Production build to dist/
+npm test            # Run all unit tests with Vitest
+ng test --watch     # Run tests in watch mode
+ng test --include=src/app/app.spec.ts  # Run single test file
+ng generate component <name>           # Generate a new component
+```
+
+## Tech Stack
+
+- Angular 21.1 (standalone components, signals)
+- TypeScript 5.9 (strict mode)
+- Vitest for unit testing
+- Tailwind CSS 4 via PostCSS
+
+## TypeScript Best Practices
+
+- Use strict type checking
+- Prefer type inference when the type is obvious
+- Avoid the `any` type; use `unknown` when type is uncertain
 
 ## TypeScript Best Practices
 
