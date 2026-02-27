@@ -1,12 +1,5 @@
-import { Component, computed, signal } from '@angular/core';
-
-interface Recipe {
-  id: number
-  title: string
-  description: string
-  cookingTime: number // in minute
-  favorite: boolean
-}
+import { Component, inject } from '@angular/core';
+import { RecipeService } from '../../services/recipe.service';
 
 @Component({
   selector: 'ui-recipe-list',
@@ -14,25 +7,9 @@ interface Recipe {
   templateUrl: './recipe-list.html'
 })
 export class RecipeList {
-  recipes = signal<Recipe[]>([
-    {
-      id: 1,
-      title: 'Crêpes',
-      description: 'Classic French crêpes',
-      cookingTime: 20,
-      favorite: true
-    },
-    {
-      id: 2,
-      title: 'Crêpes',
-      description: 'Classic French crêpes',
-      cookingTime: 20,
-      favorite: true
-    }
-  ])
-  favoriteCount = computed(() => this.recipes().filter(r => r.favorite).length)
+  private recipeService = inject(RecipeService)
+  recipes = this.recipeService.recipes
+  favoriteCount = this.recipeService.favoriteCount
+  toggleFavorite = (id: number) => this.recipeService.toggleFavorite(id)
 
-  toggleFavorite(id: number) {
-    this.recipes.update(recipes => recipes.map(r => r.id === id ? {...r, favorite: !r.favorite }: r))
-  }
 }
