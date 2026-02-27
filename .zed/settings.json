@@ -1,0 +1,14 @@
+{
+  "lsp": {
+    "typescript-language-server": {
+      "binary": {
+        "path": "/home/maxime/.bun/bin/typescript-language-server"
+      }
+    }
+  },
+  "languages": {
+    "TypeScript": {
+      "language_servers": ["typescript-language-server", "!vtsls"]
+    }
+  }
+}

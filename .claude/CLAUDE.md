@@ -5,12 +5,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm start           # Start dev server at http://localhost:4200
-npm run build       # Production build to dist/
-npm test            # Run all unit tests with Vitest
-ng test --watch     # Run tests in watch mode
-ng test --include=src/app/app.spec.ts  # Run single test file
-ng generate component <name>           # Generate a new component
+bun start           # Start dev server at http://localhost:4200
+bun run build       # Production build to dist/
+bun test            # Run all unit tests with Vitest
+bun ng test --watch # Run tests in watch mode
+bun ng test --include=src/app/app.spec.ts  # Run single test file
+bun ng generate component <name>           # Generate a new component
 ```
 
 ## Tech Stack
@@ -19,12 +19,7 @@ ng generate component <name>           # Generate a new component
 - TypeScript 5.9 (strict mode)
 - Vitest for unit testing
 - Tailwind CSS 4 via PostCSS
-
-## TypeScript Best Practices
-
-- Use strict type checking
-- Prefer type inference when the type is obvious
-- Avoid the `any` type; use `unknown` when type is uncertain
+- Bun as package manager
 
 ## TypeScript Best Practices
 
