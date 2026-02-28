@@ -1,4 +1,5 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, computed } from '@angular/core';
+import { httpResource } from '@angular/common/http';
 
 interface Recipe {
   id: number
@@ -12,25 +13,8 @@ interface Recipe {
   providedIn: 'root'
 })
 export class RecipeService {
-  recipes = signal<Recipe[]>([
-    {
-      id: 1,
-      title: 'Crêpes',
-      description: 'Classic French crêpes',
-      cookingTime: 20,
-      favorite: true
-    },
-    {
-      id: 2,
-      title: 'Crêpes',
-      description: 'Classic French crêpes',
-      cookingTime: 20,
-      favorite: true
-    }
-  ])
-  favoriteCount = computed(() => this.recipes().filter(r => r.favorite).length)
+  recipes = httpResource<Recipe[]>(() => '/recipes.json', {defaultValue: []})
 
-  toggleFavorite(id: number) {
-    this.recipes.update(recipes => recipes.map(r => r.id === id ? {...r, favorite: !r.favorite }: r))
-  }
+  favoriteCount = computed(() => this.recipes.value().filter(r => r.favorite).length)
+  toggleFavorite = (id: number) => this.recipes.value.update((prev) => prev.map(r => r.id === id ? {...r, favorite: !r.favorite} : r))
 }

@@ -1,7 +1,13 @@
 {
+  "permissions": {
+    "allow": [
+      "mcp__angular-cli__search_documentation",
+      "Bash(tail:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "angular-cli"
   ],
-  "outputStyle": "Learning",
-  "enableAllProjectMcpServers": true
+  "outputStyle": "Learning"
 }

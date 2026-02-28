@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "title": "Crêpes",
+    "description": "Classic French crêpes with butter and sugar",
+    "cookingTime": 20,
+    "favorite": true
+  },
+  {
+    "id": 2,
+    "title": "Ratatouille",
+    "description": "Provençal vegetable stew",
+    "cookingTime": 45,
+    "favorite": false
+  },
+  {
+    "id": 3,
+    "title": "Quiche Lorraine",
+    "description": "Savory pie with bacon and cream",
+    "cookingTime": 50,
+    "favorite": true
+  }
+]
