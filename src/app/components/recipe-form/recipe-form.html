@@ -1,0 +1,35 @@
+<form (submit)="submit($event)" class="flex flex-col gap-3 m-12 p-6 border border-slate-300 rounded-lg w-80">
+  <h3 class="font-bold text-lg">Add a recipe</h3>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Title</span>
+    <input type="text" [formField]="recipeForm.title" class="border border-slate-300 rounded px-2 py-1 text-sm" />
+    @if (recipeForm.title().touched() && recipeForm.title().invalid()) {
+      <small class="text-red-500 text-xs">
+        @for (error of recipeForm.title().errors(); track error) {
+          {{ error.message }}
+        }
+      </small>
+    }
+  </label>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Description</span>
+    <textarea [formField]="recipeForm.description" rows="2" class="border border-slate-300 rounded px-2 py-1 text-sm"></textarea>
+    @if (recipeForm.description().touched() && recipeForm.description().invalid()) {
+      <small class="text-red-500 text-xs">Description is required</small>
+    }
+  </label>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Cooking time (min)</span>
+    <input type="number" [formField]="recipeForm.cookingTime" class="border border-slate-300 rounded px-2 py-1 text-sm" />
+    @if (recipeForm.cookingTime().touched() && recipeForm.cookingTime().invalid()) {
+      <small class="text-red-500 text-xs">Must be at least 1 minute</small>
+    }
+  </label>
+
+  <button type="submit" class="bg-slate-800 text-white text-sm px-4 py-2 rounded disabled:opacity-40">
+    Add recipe
+  </button>
+</form>

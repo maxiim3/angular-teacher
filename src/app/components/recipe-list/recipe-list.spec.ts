@@ -35,27 +35,24 @@ describe('RecipeList', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display recipes after HTTP response', () => {
-    // Step 1: Catch the pending request that httpResource fired automatically
-    const req = httpTesting.expectOne('/recipes.json');
-
-    // Step 2: Respond with our mock data (like returning a fake API response)
-    req.flush(mockRecipes);
-
-    // Step 3: Tell Angular to process the signal update into the DOM
+  it('should display recipes after HTTP response', async () => {
+    // Step 0: Kick off change detection so httpResource fires the request
     fixture.detectChanges();
 
-    // Step 4: Now the component has data — query the rendered DOM
+    // Step 1: Catch the pending request
+    const req = httpTesting.expectOne('/recipes.json');
+
+    // Step 2: Respond with mock data
+    req.flush(mockRecipes);
+
+    // Step 3: Wait for async signal update, then re-render
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    // Step 4: Assert
     const compiled = fixture.nativeElement as HTMLElement;
 
-    // TODO(human): Write 2-3 expect() assertions to verify the recipes rendered.
-    //
-    // You have access to:
-    //   compiled.querySelectorAll(...)  — find DOM elements (like document.querySelectorAll)
-    //   compiled.textContent            — all text in the component
-    //   component.recipes()             — the signal value directly
-    //
-    // Ideas: check the number of recipe cards, check that "Crêpes" appears,
-    //        check the favorite count shows "1 favorites" (only Crêpes is favorite).
+    expect(compiled.querySelector('h2')?.textContent).toContain('Recipes');
+    expect(compiled.querySelectorAll('[data-test-id="list-item"]').length).toBe(mockRecipes.length);
   });
 });

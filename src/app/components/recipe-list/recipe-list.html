@@ -2,21 +2,17 @@
   <h2>My Recipes ({{ favoriteCount() }} favorites)</h2>
 
   @for (r of recipes(); track r.id) {
-      <div class="border border-slate-400 w-60 p-4 rounded-lg">
-        <h3 class="font-bold">
-         {{r.title}}
-          @if(r.favorite) {
-            ★
-          }
-        </h3>
-        <p class="text-sm">{{r.description}}</p>
-        <small class="text-xs text-slate-500 block">cooking time: {{r.cookingTime}}min</small>
-        <button class="text-xs bg-slate-100 px-3 py-1 rounded-sm mt-2" (click)="toggleFavorite(r.id)">Favorite</button>
-      </div>
-    }
-  @empty {
-    <div>
-      <p>add your first item</p>
-    </div>
+  <div data-test-id="list-item" class="border border-slate-400 w-60 p-4 rounded-lg">
+    <h3 class="font-bold">{{r.title}} @if(r.favorite) { ★ }</h3>
+    <p class="text-sm">{{r.description}}</p>
+    <small class="text-xs text-slate-500 block">cooking time: {{r.cookingTime}}min</small>
+    <button class="text-xs bg-slate-100 px-3 py-1 rounded-sm mt-2" (click)="toggleFavorite(r.id)">
+      Favorite
+    </button>
+  </div>
+  } @empty {
+  <div>
+    <p>add your first item</p>
+  </div>
   }
 </section>

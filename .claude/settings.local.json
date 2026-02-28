@@ -3,7 +3,8 @@
     "allow": [
       "mcp__angular-cli__search_documentation",
       "Bash(tail:*)",
-      "Bash(bun ng:*)"
+      "Bash(bun ng:*)",
+      "Bash(bun run:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
