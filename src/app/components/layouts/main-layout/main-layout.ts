@@ -5,8 +5,5 @@ import { RouterOutlet } from '@angular/router';
   selector: 'ui-main-layout',
   imports: [RouterOutlet],
   templateUrl: './main-layout.html',
-  styleUrl: './main-layout.css',
 })
-export class MainLayout {
-
-}
+export class MainLayout {}

@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "mcp__angular-cli__search_documentation",
-      "Bash(tail:*)"
+      "Bash(tail:*)",
+      "Bash(bun ng:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
