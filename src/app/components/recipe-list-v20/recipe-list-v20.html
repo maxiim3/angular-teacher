@@ -1,0 +1,45 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ANGULAR 20 TEMPLATE — Recipe List                          ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                             ║
+  ║  IDENTICAL to v18 template!                                 ║
+  ║                                                             ║
+  ║  v20's revolution was in the COMPONENT (standalone default)  ║
+  ║  not in the template syntax. Templates stabilized at v18:   ║
+  ║  • @for with mandatory track                                ║
+  ║  • @if for conditionals                                     ║
+  ║  • @empty for empty state                                   ║
+  ║  • Signal reads via ()                                      ║
+  ║                                                             ║
+  ║  This stability is a feature, not a lack of progress:       ║
+  ║  the v18 template syntax was well-designed from the start.  ║
+  ║                                                             ║
+  ║  NEXT: v21 (recipe-list.html) uses httpResource():          ║
+  ║    recipes = httpResource<Recipe[]>(() => '/recipes.json')  ║
+  ║    Template reads: recipes.value() — same signal syntax     ║
+  ║    The change is invisible in the template.                 ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<section class="flex gap-5 m-12 p-8 flex-col">
+  <h2>My Recipes ({{ favoriteCount() }} favorites) <span class="text-xs text-slate-400">(v20)</span></h2>
+
+  @for (r of recipes(); track r.id) {
+    <div class="border border-slate-400 w-60 p-4 rounded-lg">
+      <h3 class="font-bold">
+        {{r.title}}
+        @if (r.favorite) { ★ }
+      </h3>
+      <p class="text-sm">{{r.description}}</p>
+      <small class="text-xs text-slate-500 block">cooking time: {{r.cookingTime}}min</small>
+      <button class="text-xs bg-slate-100 px-3 py-1 rounded-sm mt-2"
+              (click)="toggleFavorite(r.id)">
+        Favorite
+      </button>
+    </div>
+  } @empty {
+    <div>
+      <p>add your first item</p>
+    </div>
+  }
+</section>

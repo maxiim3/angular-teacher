@@ -1,0 +1,57 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ANGULAR 16 TEMPLATE                                        ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                             ║
+  ║  IDENTICAL to v14 template!                                 ║
+  ║                                                             ║
+  ║  v16's revolution was in the COMPONENT (standalone, inject)  ║
+  ║  not in the template syntax. Templates still use:           ║
+  ║  • *ngIf structural directive (requires CommonModule)       ║
+  ║  • .get('title') string-based access (untyped)              ║
+  ║  • formControlName string binding                           ║
+  ║                                                             ║
+  ║  @if/@for existed in v16 but only as developer preview.     ║
+  ║  Most projects stayed on *ngIf until v18 made it stable.    ║
+  ║                                                             ║
+  ║  The big difference is WHERE CommonModule is imported:       ║
+  ║    v14: imported in NgModule → available to all components   ║
+  ║    v16: imported in @Component.imports → per-component       ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<form [formGroup]="recipeForm" (ngSubmit)="submit()" class="flex flex-col gap-3 m-12 p-6 border border-slate-300 rounded-lg w-80">
+  <h3 class="font-bold text-lg">Add a recipe <span class="text-xs text-slate-400">(v16)</span></h3>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Title</span>
+    <input type="text" formControlName="title" class="border border-slate-300 rounded px-2 py-1 text-sm" />
+    <!-- Still *ngIf — @if is in developer preview, not recommended for production -->
+    <small *ngIf="recipeForm.get('title')?.invalid && recipeForm.get('title')?.touched"
+           class="text-red-500 text-xs">
+      Title is required (min 2 characters)
+    </small>
+  </label>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Description</span>
+    <textarea formControlName="description" rows="2" class="border border-slate-300 rounded px-2 py-1 text-sm"></textarea>
+    <small *ngIf="recipeForm.get('description')?.invalid && recipeForm.get('description')?.touched"
+           class="text-red-500 text-xs">
+      Description is required
+    </small>
+  </label>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Cooking time (min)</span>
+    <input type="number" formControlName="cookingTime" class="border border-slate-300 rounded px-2 py-1 text-sm" />
+    <small *ngIf="recipeForm.get('cookingTime')?.invalid && recipeForm.get('cookingTime')?.touched"
+           class="text-red-500 text-xs">
+      Must be at least 1 minute
+    </small>
+  </label>
+
+  <button type="submit" [disabled]="recipeForm.invalid"
+          class="bg-slate-800 text-white text-sm px-4 py-2 rounded disabled:opacity-40">
+    Add recipe
+  </button>
+</form>

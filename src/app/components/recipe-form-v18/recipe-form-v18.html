@@ -1,0 +1,61 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ANGULAR 18 TEMPLATE                                        ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                             ║
+  ║  WHAT CHANGED from v16 template:                            ║
+  ║                                                             ║
+  ║  *ngIf="cond"  →  @if (cond) { ... }                       ║
+  ║  *ngFor="..."  →  @for (item of items; track item) { ... } ║
+  ║  *ngSwitch     →  @switch (val) { @case (...) { } }         ║
+  ║                                                             ║
+  ║  Why @if is better than *ngIf:                              ║
+  ║  1. No import needed — built into the template engine       ║
+  ║  2. Better type narrowing inside the block                  ║
+  ║  3. @else is cleaner than <ng-template #elseBlock>          ║
+  ║  4. @for REQUIRES track — prevents accidental O(n) rerenders║
+  ║  5. @empty block built-in for empty lists                   ║
+  ║                                                             ║
+  ║  The form binding (.get('title')) is still string-based.    ║
+  ║  Compare with v20 template: .controls.title (typed)         ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<form [formGroup]="recipeForm" (ngSubmit)="submit()" class="flex flex-col gap-3 m-12 p-6 border border-slate-300 rounded-lg w-80">
+  <h3 class="font-bold text-lg">Add a recipe <span class="text-xs text-slate-400">(v18)</span></h3>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Title</span>
+    <input type="text" formControlName="title" class="border border-slate-300 rounded px-2 py-1 text-sm" />
+
+    <!--
+      @if replaces *ngIf — notice:
+      • No directive import needed (no CommonModule)
+      • Curly braces { } wrap the conditional content
+      • Still using .get('title') — string-based, untyped
+    -->
+    @if (recipeForm.get('title')?.invalid && recipeForm.get('title')?.touched) {
+      <small class="text-red-500 text-xs">Title is required (min 2 characters)</small>
+    }
+  </label>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Description</span>
+    <textarea formControlName="description" rows="2" class="border border-slate-300 rounded px-2 py-1 text-sm"></textarea>
+    @if (recipeForm.get('description')?.invalid && recipeForm.get('description')?.touched) {
+      <small class="text-red-500 text-xs">Description is required</small>
+    }
+  </label>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Cooking time (min)</span>
+    <input type="number" formControlName="cookingTime" class="border border-slate-300 rounded px-2 py-1 text-sm" />
+    @if (recipeForm.get('cookingTime')?.invalid && recipeForm.get('cookingTime')?.touched) {
+      <small class="text-red-500 text-xs">Must be at least 1 minute</small>
+    }
+  </label>
+
+  <button type="submit" [disabled]="recipeForm.invalid"
+          class="bg-slate-800 text-white text-sm px-4 py-2 rounded disabled:opacity-40">
+    Add recipe
+  </button>
+</form>

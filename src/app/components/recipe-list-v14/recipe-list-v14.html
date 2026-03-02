@@ -1,0 +1,55 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ANGULAR 14 TEMPLATE — Recipe List                          ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                             ║
+  ║  Template syntax:                                           ║
+  ║  • *ngFor="let r of recipes"  → structural directive        ║
+  ║  • *ngIf="condition"          → conditional rendering       ║
+  ║  • [trackBy]="trackByFn"      → OPTIONAL perf optimization  ║
+  ║  • (click)="handler()"        → event binding               ║
+  ║                                                             ║
+  ║  Key issues with this approach:                             ║
+  ║  • *ngFor/*ngIf require CommonModule in the NgModule         ║
+  ║  • trackBy is optional — easy to forget → O(n) re-renders  ║
+  ║  • No built-in @empty — need separate *ngIf for empty state ║
+  ║  • recipes is a mutable array — stale data possible         ║
+  ║                                                             ║
+  ║  Compare with v18 template (recipe-list-v18.html):          ║
+  ║    @for (r of recipes(); track r.id) { ... }                ║
+  ║    @empty { ... }  ← built-in empty state                   ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<section class="flex gap-5 m-12 p-8 flex-col">
+  <h2>My Recipes ({{ favoriteCount }} favorites) <span class="text-xs text-slate-400">(v14)</span></h2>
+
+  <!--
+    *ngIf for empty state — no @empty in v14.
+    Must manually check .length and show an alternative.
+    Easy to forget → user sees blank screen with no feedback.
+  -->
+  <div *ngIf="recipes.length === 0">
+    <p>add your first item</p>
+  </div>
+
+  <!--
+    *ngFor: structural directive — requires CommonModule.
+    trackBy: OPTIONAL but critical for performance.
+    Without it, changing one recipe re-renders ALL items.
+    In v18, @for makes track MANDATORY — can't forget it.
+  -->
+  <div *ngFor="let r of recipes; trackBy: trackByRecipeId"
+       class="border border-slate-400 w-60 p-4 rounded-lg">
+    <h3 class="font-bold">
+      {{r.title}}
+      <!-- *ngIf for inline conditional — verbose for simple checks -->
+      <span *ngIf="r.favorite">★</span>
+    </h3>
+    <p class="text-sm">{{r.description}}</p>
+    <small class="text-xs text-slate-500 block">cooking time: {{r.cookingTime}}min</small>
+    <button class="text-xs bg-slate-100 px-3 py-1 rounded-sm mt-2"
+            (click)="toggleFavorite(r.id)">
+      Favorite
+    </button>
+  </div>
+</section>

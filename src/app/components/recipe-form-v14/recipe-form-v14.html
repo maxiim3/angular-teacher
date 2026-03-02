@@ -1,0 +1,63 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ANGULAR 14 TEMPLATE                                        ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                             ║
+  ║  Template syntax:                                           ║
+  ║  • [formGroup]="recipeForm"  → binds the FormGroup          ║
+  ║  • formControlName="title"   → binds a control by STRING    ║
+  ║  • (ngSubmit)="submit()"     → form submission event        ║
+  ║  • *ngIf="condition"         → structural directive         ║
+  ║                                                             ║
+  ║  Key issues with this approach:                             ║
+  ║  • .get('title') uses a STRING → no type checking           ║
+  ║    Typo like .get('titl') compiles fine, fails at runtime   ║
+  ║  • *ngIf requires CommonModule import in NgModule           ║
+  ║  • ?. optional chaining needed because .get() returns null  ║
+  ║                                                             ║
+  ║  Compare with v20 template (recipe-form-v20.html):          ║
+  ║    .controls.title → typed property access, compile-time    ║
+  ║  Compare with v21 template (recipe-form.html):              ║
+  ║    recipeForm.title() → signal, fully reactive              ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<form [formGroup]="recipeForm" (ngSubmit)="submit()" class="flex flex-col gap-3 m-12 p-6 border border-slate-300 rounded-lg w-80">
+  <h3 class="font-bold text-lg">Add a recipe <span class="text-xs text-slate-400">(v14)</span></h3>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Title</span>
+
+    <!-- formControlName binds by STRING name — no type safety -->
+    <input type="text" formControlName="title" class="border border-slate-300 rounded px-2 py-1 text-sm" />
+
+    <!-- *ngIf: structural directive — requires CommonModule in NgModule -->
+    <!-- .get('title') returns AbstractControl | null — hence the ?. -->
+    <small *ngIf="recipeForm.get('title')?.invalid && recipeForm.get('title')?.touched"
+           class="text-red-500 text-xs">
+      Title is required (min 2 characters)
+    </small>
+  </label>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Description</span>
+    <textarea formControlName="description" rows="2" class="border border-slate-300 rounded px-2 py-1 text-sm"></textarea>
+    <small *ngIf="recipeForm.get('description')?.invalid && recipeForm.get('description')?.touched"
+           class="text-red-500 text-xs">
+      Description is required
+    </small>
+  </label>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Cooking time (min)</span>
+    <input type="number" formControlName="cookingTime" class="border border-slate-300 rounded px-2 py-1 text-sm" />
+    <small *ngIf="recipeForm.get('cookingTime')?.invalid && recipeForm.get('cookingTime')?.touched"
+           class="text-red-500 text-xs">
+      Must be at least 1 minute
+    </small>
+  </label>
+
+  <button type="submit" [disabled]="recipeForm.invalid"
+          class="bg-slate-800 text-white text-sm px-4 py-2 rounded disabled:opacity-40">
+    Add recipe
+  </button>
+</form>

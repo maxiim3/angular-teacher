@@ -4,7 +4,15 @@
       "mcp__angular-cli__search_documentation",
       "Bash(tail:*)",
       "Bash(bun ng:*)",
-      "Bash(bun run:*)"
+      "Bash(bun run:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "WebSearch",
+      "WebFetch(domain:endoflife.date)",
+      "WebFetch(domain:en.wikipedia.org)",
+      "WebFetch(domain:www.ngdevelop.tech)",
+      "WebFetch(domain:dev.to)",
+      "WebFetch(domain:angular.dev)"
     ]
   },
   "enableAllProjectMcpServers": true,

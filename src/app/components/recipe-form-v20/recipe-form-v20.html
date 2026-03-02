@@ -1,0 +1,68 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ANGULAR 20 TEMPLATE                                        ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                             ║
+  ║  WHAT CHANGED from v18 template:                            ║
+  ║                                                             ║
+  ║  Form control access is now TYPED:                          ║
+  ║                                                             ║
+  ║    v14/v16/v18:                                             ║
+  ║      recipeForm.get('title')?.invalid                       ║
+  ║      ─ string-based, returns AbstractControl | null         ║
+  ║      ─ typo 'titl' → compiles, crashes at runtime          ║
+  ║                                                             ║
+  ║    v20:                                                     ║
+  ║      recipeForm.controls.title.invalid                      ║
+  ║      ─ typed property access                                ║
+  ║      ─ typo 'titl' → COMPILE ERROR (caught by TypeScript)  ║
+  ║      ─ no optional chaining needed (controls always exist)  ║
+  ║                                                             ║
+  ║  This is possible because fb.nonNullable.group() creates    ║
+  ║  a FormGroup with a known .controls type.                   ║
+  ║                                                             ║
+  ║  NEXT: v21 (recipe-form.html) replaces ALL of this with    ║
+  ║  signal-based forms:                                        ║
+  ║    [formField]="recipeForm.title"                           ║
+  ║    recipeForm.title().touched()  ← signals, not properties  ║
+  ║    recipeForm.title().errors()   ← iterable error signals   ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<form [formGroup]="recipeForm" (ngSubmit)="submit()" class="flex flex-col gap-3 m-12 p-6 border border-slate-300 rounded-lg w-80">
+  <h3 class="font-bold text-lg">Add a recipe <span class="text-xs text-slate-400">(v20)</span></h3>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Title</span>
+    <input type="text" formControlName="title" class="border border-slate-300 rounded px-2 py-1 text-sm" />
+
+    <!--
+      .controls.title — TYPED access!
+      No .get('title') string, no ?. optional chaining.
+      TypeScript catches typos at compile time.
+    -->
+    @if (recipeForm.controls.title.invalid && recipeForm.controls.title.touched) {
+      <small class="text-red-500 text-xs">Title is required (min 2 characters)</small>
+    }
+  </label>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Description</span>
+    <textarea formControlName="description" rows="2" class="border border-slate-300 rounded px-2 py-1 text-sm"></textarea>
+    @if (recipeForm.controls.description.invalid && recipeForm.controls.description.touched) {
+      <small class="text-red-500 text-xs">Description is required</small>
+    }
+  </label>
+
+  <label class="flex flex-col gap-1">
+    <span class="text-sm font-medium">Cooking time (min)</span>
+    <input type="number" formControlName="cookingTime" class="border border-slate-300 rounded px-2 py-1 text-sm" />
+    @if (recipeForm.controls.cookingTime.invalid && recipeForm.controls.cookingTime.touched) {
+      <small class="text-red-500 text-xs">Must be at least 1 minute</small>
+    }
+  </label>
+
+  <button type="submit" [disabled]="recipeForm.invalid"
+          class="bg-slate-800 text-white text-sm px-4 py-2 rounded disabled:opacity-40">
+    Add recipe
+  </button>
+</form>

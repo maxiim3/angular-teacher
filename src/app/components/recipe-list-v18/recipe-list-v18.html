@@ -1,0 +1,64 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ANGULAR 18 TEMPLATE — Recipe List                          ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                             ║
+  ║  WHAT CHANGED from v16 template:                            ║
+  ║                                                             ║
+  ║  1. @for replaces *ngFor                                    ║
+  ║     *ngFor="let r of recipes$ | async"                      ║
+  ║     → @for (r of recipes(); track r.id) { ... }             ║
+  ║                                                             ║
+  ║     • track is MANDATORY — compile error if forgotten        ║
+  ║     • No async pipe — recipes() is a synchronous signal read║
+  ║     • @empty block built-in — no separate *ngIf needed      ║
+  ║                                                             ║
+  ║  2. @if replaces *ngIf                                      ║
+  ║     *ngIf="r.favorite"                                      ║
+  ║     → @if (r.favorite) { ... }                              ║
+  ║                                                             ║
+  ║  3. No imports needed                                       ║
+  ║     @for/@if are built into the template engine.             ║
+  ║     No CommonModule, no AsyncPipe, no NgForOf.               ║
+  ║                                                             ║
+  ║  4. Signal reads use ()                                     ║
+  ║     {{ favoriteCount }}  →  {{ favoriteCount() }}           ║
+  ║     recipes  →  recipes()                                   ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<section class="flex gap-5 m-12 p-8 flex-col">
+  <h2>My Recipes ({{ favoriteCount() }} favorites) <span class="text-xs text-slate-400">(v18)</span></h2>
+
+  <!--
+    @for with mandatory track:
+    • track r.id tells Angular how to identify each item
+    • Compile error if you forget track (unlike *ngFor's optional trackBy)
+    • @empty block replaces the separate *ngIf for empty state
+
+    Compare with v16:
+      <ng-container *ngIf="recipes$ | async as recipes">
+        <div *ngIf="recipes.length === 0">...</div>
+        <div *ngFor="let r of recipes">...</div>
+      </ng-container>
+
+    v18 is cleaner: one @for block handles both the list AND the empty case.
+  -->
+  @for (r of recipes(); track r.id) {
+    <div class="border border-slate-400 w-60 p-4 rounded-lg">
+      <h3 class="font-bold">
+        {{r.title}}
+        @if (r.favorite) { ★ }
+      </h3>
+      <p class="text-sm">{{r.description}}</p>
+      <small class="text-xs text-slate-500 block">cooking time: {{r.cookingTime}}min</small>
+      <button class="text-xs bg-slate-100 px-3 py-1 rounded-sm mt-2"
+              (click)="toggleFavorite(r.id)">
+        Favorite
+      </button>
+    </div>
+  } @empty {
+    <div>
+      <p>add your first item</p>
+    </div>
+  }
+</section>

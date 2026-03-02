@@ -1,0 +1,63 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ANGULAR 16 TEMPLATE — Recipe List                          ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║                                                             ║
+  ║  WHAT CHANGED from v14 template:                            ║
+  ║                                                             ║
+  ║  async pipe replaces manual subscribe:                      ║
+  ║                                                             ║
+  ║    v14:                                                     ║
+  ║      *ngFor="let r of recipes"                              ║
+  ║      (recipes is a mutable array, set via subscribe)        ║
+  ║                                                             ║
+  ║    v16:                                                     ║
+  ║      *ngFor="let r of recipes$ | async"                    ║
+  ║      (async pipe subscribes/unsubscribes automatically)    ║
+  ║                                                             ║
+  ║  Pattern: "| async as variable" lets you unwrap once:       ║
+  ║    <ng-container *ngIf="recipes$ | async as recipes">      ║
+  ║      — recipes is now Recipe[] inside the block             ║
+  ║      — also handles the null/undefined case                ║
+  ║                                                             ║
+  ║  Still using *ngFor/*ngIf — @for/@if comes in v18.          ║
+  ║  trackBy is still OPTIONAL.                                ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<section class="flex gap-5 m-12 p-8 flex-col">
+  <h2>My Recipes ({{ favoriteCount$ | async }} favorites) <span class="text-xs text-slate-400">(v16)</span></h2>
+
+  <!--
+    *ngIf + async pipe pattern:
+    "recipes$ | async as recipes" does TWO things:
+      1. Subscribes to the Observable (auto-unsubscribes on destroy)
+      2. Assigns the emitted value to a local variable "recipes"
+
+    The *ngIf also handles the initial null case — nothing renders
+    until the Observable emits its first value.
+  -->
+  <ng-container *ngIf="recipes$ | async as recipes">
+    <div *ngIf="recipes.length === 0">
+      <p>add your first item</p>
+    </div>
+
+    <!--
+      Still *ngFor with optional trackBy.
+      async pipe already unwrapped the Observable above,
+      so we use the plain "recipes" variable here.
+    -->
+    <div *ngFor="let r of recipes"
+         class="border border-slate-400 w-60 p-4 rounded-lg">
+      <h3 class="font-bold">
+        {{r.title}}
+        <span *ngIf="r.favorite">★</span>
+      </h3>
+      <p class="text-sm">{{r.description}}</p>
+      <small class="text-xs text-slate-500 block">cooking time: {{r.cookingTime}}min</small>
+      <button class="text-xs bg-slate-100 px-3 py-1 rounded-sm mt-2"
+              (click)="toggleFavorite(r.id)">
+        Favorite
+      </button>
+    </div>
+  </ng-container>
+</section>
